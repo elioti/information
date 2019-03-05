@@ -16,10 +16,17 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from rest_framework.routers import DefaultRouter
-from info.views import UserViewSet
+from info.views import UserViewSet, AdminViewSet
+from rest_framework_jwt.views import verify_jwt_token, ObtainJSONWebToken
+from django.views.generic import TemplateView
+
 router = DefaultRouter()
-router.register(r'users', UserViewSet, base_name='users')
+router.register(r'members', UserViewSet, base_name='users')
+router.register(r'users', AdminViewSet, base_name='users')
 
 urlpatterns = [
-    url(r'', include(router.urls)),
+    url(r'login', ObtainJSONWebToken.as_view()),
+    url(r'^info$', verify_jwt_token),
+    url(r'api/', include(router.urls)),
+    url(r'', TemplateView.as_view(template_name="index.html"), name="index"),
 ]
