@@ -29,8 +29,9 @@ urlpatterns = [
     url(r'login', ObtainJSONWebToken.as_view()),
     url(r'^info$', verify_jwt_token),
     url(r'api/', include(router.urls)),
-    url(r'^index', TemplateView.as_view(template_name="index.html"), name="index"),
     url(r'^static/(?P<path>.*)$', static.serve,{'document_root': settings.STATIC_ROOT}, name='static'),
+    url(r'', TemplateView.as_view(template_name="index.html"), name="index"),
+
 ]
 #urlpatterns += static.static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

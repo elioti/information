@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import os
 import sys
-
+import time
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "information.settings")
     try:
@@ -19,4 +19,8 @@ if __name__ == "__main__":
                 "forget to activate a virtual environment?"
             )
         raise
-    execute_from_command_line(['manage.py', 'runserver', 'localhost:8000'] )
+    default = sys.argv
+    if len(default) == 1:
+        default += ['runserver', 'localhost:8000']
+
+    execute_from_command_line(default)
