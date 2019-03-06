@@ -19,7 +19,8 @@ from rest_framework.routers import DefaultRouter
 from info.views import UserViewSet, AdminViewSet
 from rest_framework_jwt.views import verify_jwt_token, ObtainJSONWebToken
 from django.views.generic import TemplateView
-
+from django.conf.urls import static
+from information import settings
 router = DefaultRouter()
 router.register(r'members', UserViewSet, base_name='users')
 router.register(r'users', AdminViewSet, base_name='users')
@@ -28,5 +29,9 @@ urlpatterns = [
     url(r'login', ObtainJSONWebToken.as_view()),
     url(r'^info$', verify_jwt_token),
     url(r'api/', include(router.urls)),
-    url(r'', TemplateView.as_view(template_name="index.html"), name="index"),
+    url(r'^index', TemplateView.as_view(template_name="index.html"), name="index"),
+    url(r'^static/(?P<path>.*)$', static.serve,{'document_root': settings.STATIC_ROOT}, name='static'),
 ]
+#urlpatterns += static.static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+

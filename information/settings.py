@@ -35,9 +35,9 @@ INSTALLED_APPS = [
     # 'corsheaders',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    # 'django.contrib.sessions',
+    # 'django.contrib.messages',
+    # 'django.contrib.staticfiles',
     'info.apps.InfoConfig',
     'rest_framework',
     'django_filters',
@@ -46,11 +46,11 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     # 'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    # 'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.contrib.auth.middleware.AuthenticationMiddleware',
+    # 'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -116,7 +116,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "dists/static"),
+    os.path.join(BASE_DIR, "dists/static/"),
 )
 # rest_framework设置
 REST_FRAMEWORK = {
@@ -150,3 +150,4 @@ JWT_AUTH = {
     'JWT_GET_USER_SECRET_KEY': 'utils.jwt.jwt_get_user_secret_key'
 }
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'dists', 'static')

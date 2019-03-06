@@ -48,7 +48,7 @@ class UserViewSet(viewsets.ModelViewSet):
             User.objects.all().delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         else:
-            super(UserViewSet, self).destroy(request, *args, **kwargs)
+            return super(UserViewSet, self).destroy(request, *args, **kwargs)
 
     def perform_create(self, serializer):
         serializer.save(datetime=now())
