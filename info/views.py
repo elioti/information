@@ -12,14 +12,14 @@ from django.utils.timezone import now
 from rest_framework.permissions import IsAuthenticated
 from utils.permission import IsSuperUser
 from django.contrib.auth.hashers import make_password
-
+from django.db.models import Min
 # Create your views here.
 
 
 class UserViewSet(viewsets.ModelViewSet):
 
     serializer_class = UserSerializer
-    queryset = User.objects.all().order_by('id')
+    queryset = User.objects.values('account').annotate(name=Min('name'), id=Min('id'), phone=Min('phone'), qq=Min('qq'), email=Min('email'), wechat=Min('wechat'), datetime=Min('datetime'))
     filter_backends = (rest_framework.DjangoFilterBackend, filters.OrderingFilter,)
     ordering_fields = ('id',)
     filterset_fields = ("account", "name", "phone", "qq", "email", "wechat")
@@ -51,7 +51,24 @@ class UserViewSet(viewsets.ModelViewSet):
             return super(UserViewSet, self).destroy(request, *args, **kwargs)
 
     def perform_create(self, serializer):
-        serializer.save(datetime=now())
+        nowtime = now()
+        if isinstance(serializer.validated_data, list):
+            validated_data = [
+                dict(list(attrs.items()) + [('datetime', nowtime)])
+                for attrs in serializer.validated_data
+            ]
+            User.objects.bulk_create([User(**item) for item in validated_data])
+        else:
+            serializer.save(datetime=nowtime)
+        # old_objs = []
+        # new_objs = []
+        # for item in validated_data:
+        #     instance, flag = User.objects.get_or_create(account=item["account"], defaults=item)
+        #     if not flag:
+        #         old_objs.append(instance)
+        #         new_objs.append(item)
+        # print([i.account for i in old_objs])
+        # print([j["account"] for j in new_objs])
 
 
 class AdminViewSet(viewsets.ModelViewSet):

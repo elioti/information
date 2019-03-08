@@ -13,6 +13,9 @@ class User(models.Model):
     wechat = models.CharField("微信", max_length=32, default='')
     datetime = models.DateTimeField("建立时间", auto_created=True)
 
+    def __str__(self):
+        return str(self.account)
+
 
 class SiteAdmin(AbstractUser):
     """
